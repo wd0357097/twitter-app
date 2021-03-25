@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31026.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "twitter-app", "twitter-api\twitter-app\twitter-app.csproj", "{45D716A4-87A7-485E-9779-B66FB57F6609}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "twitter-app-api", "twitter-app-api\twitter-app-api.csproj", "{7D4CDE67-5816-4672-BA2A-3AD52C445E20}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{45D716A4-87A7-485E-9779-B66FB57F6609}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45D716A4-87A7-485E-9779-B66FB57F6609}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45D716A4-87A7-485E-9779-B66FB57F6609}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45D716A4-87A7-485E-9779-B66FB57F6609}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D4CDE67-5816-4672-BA2A-3AD52C445E20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D4CDE67-5816-4672-BA2A-3AD52C445E20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D4CDE67-5816-4672-BA2A-3AD52C445E20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D4CDE67-5816-4672-BA2A-3AD52C445E20}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0B68706D-F347-4F8C-A788-F28E9ABDC90F}
+	EndGlobalSection
+EndGlobal
