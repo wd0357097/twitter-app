@@ -28,7 +28,7 @@ namespace twitter_app_console
             //Console.WriteLine(user);
             //Console.WriteLine("Hello World!");
 
-            var data = new TwitterStream();
+            IAppStream data = new TwitterStream();
             await data.StartStreamAsync("https://api.twitter.com/2/tweets/sample/stream");
         }
     }

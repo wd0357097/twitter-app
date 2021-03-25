@@ -7,10 +7,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Configuration;
+using Newtonsoft.Json;
 
 namespace twitter_app_console
 {
-    public class TwitterStream : IAppStream
+    public class TwitterStream : IAppStream, IReportingData
     {
         private HttpClient _client;
         public TwitterStream() 
@@ -22,16 +23,43 @@ namespace twitter_app_console
         {
             _client = client;
         }
+
+        public int TotalNumberOfTweets => throw new NotImplementedException();
+
+        public decimal PercentOfTweetsThatContainsEmojis => throw new NotImplementedException();
+
+        public string TopHashTags => throw new NotImplementedException();
+
+        public decimal TweetsThatContainUrl => throw new NotImplementedException();
+
+        public decimal TweetsThatContainPhotoUrl => throw new NotImplementedException();
+
+        public string TopDomainsOfUrlsInTweets => throw new NotImplementedException();
+
+        public int AverageNumberOfTweets(TimeSpan time)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task StartStreamAsync(string url)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, url);
-            using var response = await _client.SendAsync(
+            var response = await _client.SendAsync(
                 request,
                 HttpCompletionOption.ResponseHeadersRead);
-            using (var body = await response.Content.ReadAsStreamAsync())
-            using (var reader = new StreamReader(body))
-                while (!reader.EndOfStream)
-                    Console.WriteLine(reader.ReadLine());
+            var body = await response.Content.ReadAsStreamAsync();
+            var reader = new StreamReader(body);
+            while (!reader.EndOfStream)
+            {
+                var tweet = reader.ReadLine();
+                var tweetObject = JsonConvert.DeserializeObject<TwitterResponse>(tweet);
+                Console.WriteLine(tweet);
+            }
+        }
+
+        public string TopEmojisInTweets(int number)
+        {
+            throw new NotImplementedException();
         }
 
         private void InitializeHttpClient()

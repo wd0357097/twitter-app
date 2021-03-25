@@ -13,7 +13,6 @@ namespace twitter_app_console
         public ReportingData() 
         {
             _client = new HttpClient();
-            InitializeHttpClient();
         }
 
         public ReportingData(HttpClient client)
@@ -59,13 +58,6 @@ namespace twitter_app_console
         public decimal TweetsThatContainUrl()
         {
             throw new NotImplementedException();
-        }
-
-        private void InitializeHttpClient() 
-        {
-            // TODO, Store this somewhere not in the code
-           _client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", "AAAAAAAAAAAAAAAAAAAAALW4NwEAAAAAM3n5RgIWEQuAMATyE5ATSDBQOpg%3DmpIy6kCuC1BbysKMgcFvzeuJhDrxtivHTaMP5DqqXBjaSbSZsR");
         }
     }
 }

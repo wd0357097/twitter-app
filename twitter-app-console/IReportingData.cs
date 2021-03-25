@@ -6,14 +6,13 @@ namespace twitter_app_console
 {
     public interface IReportingData
     {
-
-        int TotalNumberOfTweets();
+        int TotalNumberOfTweets { get; }
         int AverageNumberOfTweets(TimeSpan time);
         string TopEmojisInTweets(int number);
-        decimal PercentOfTweetsThatContainsEmojis();
-        string TopHashTags();
-        decimal TweetsThatContainUrl();
-        decimal TweetsThatContainPhotoUrl();
-        string TopDomainsOfUrlsInTweets();
+        decimal PercentOfTweetsThatContainsEmojis { get; }
+        string TopHashTags { get; }
+        decimal TweetsThatContainUrl { get; }
+        decimal TweetsThatContainPhotoUrl { get; }
+        string TopDomainsOfUrlsInTweets { get; }
     }
 }
