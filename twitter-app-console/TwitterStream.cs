@@ -14,6 +14,7 @@ namespace twitter_app_console
     public class TwitterStream : IAppStream, IReportingData
     {
         private HttpClient _client;
+        private int numberOfTweets; 
         public TwitterStream() 
         {
             InitializeHttpClient();
@@ -24,7 +25,25 @@ namespace twitter_app_console
             _client = client;
         }
 
-        public int TotalNumberOfTweets => throw new NotImplementedException();
+        public async Task StartStreamAsync(string url)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            var response = await _client.SendAsync(
+                request,
+                HttpCompletionOption.ResponseHeadersRead);
+            var body = await response.Content.ReadAsStreamAsync();
+            var reader = new StreamReader(body);
+            while (!reader.EndOfStream)
+            {
+                numberOfTweets++;
+                var tweet = reader.ReadLine();
+                var tweetObject = JsonConvert.DeserializeObject<TwitterResponse>(tweet);
+                Console.WriteLine(tweet);
+                Console.WriteLine("Number Of Tweets: " + this.TotalNumberOfTweets);
+            }
+        }
+
+        public int TotalNumberOfTweets => numberOfTweets;
 
         public decimal PercentOfTweetsThatContainsEmojis => throw new NotImplementedException();
 
@@ -41,22 +60,6 @@ namespace twitter_app_console
             throw new NotImplementedException();
         }
 
-        public async Task StartStreamAsync(string url)
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = await _client.SendAsync(
-                request,
-                HttpCompletionOption.ResponseHeadersRead);
-            var body = await response.Content.ReadAsStreamAsync();
-            var reader = new StreamReader(body);
-            while (!reader.EndOfStream)
-            {
-                var tweet = reader.ReadLine();
-                var tweetObject = JsonConvert.DeserializeObject<TwitterResponse>(tweet);
-                Console.WriteLine(tweet);
-            }
-        }
-
         public string TopEmojisInTweets(int number)
         {
             throw new NotImplementedException();
@@ -68,7 +71,6 @@ namespace twitter_app_console
             {
                 Timeout = TimeSpan.FromMilliseconds(Timeout.Infinite)
             };
-            // TODO, Store this somewhere not in the code
             _client.DefaultRequestHeaders.Authorization =
                  new AuthenticationHeaderValue("Bearer", ConfigurationManager.AppSettings["token"]);
         }
