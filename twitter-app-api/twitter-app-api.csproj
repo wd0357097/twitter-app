@@ -10,5 +10,9 @@
     <Folder Include="configuration\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Swagger" Version="1.0.0" />
+  </ItemGroup>
+
 
 </Project>

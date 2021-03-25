@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31026.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "twitter-app", "twitter-api\twitter-app\twitter-app.csproj", "{45D716A4-87A7-485E-9779-B66FB57F6609}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "twitter-app-api", "twitter-app-api\twitter-app-api.csproj", "{7D4CDE67-5816-4672-BA2A-3AD52C445E20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "twitter-app-api", "twitter-app-api\twitter-app-api.csproj", "{7D4CDE67-5816-4672-BA2A-3AD52C445E20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "twitter-app-console", "twitter-app-console\twitter-app-console.csproj", "{A62315C0-B539-4D01-B349-40F6CD382DDA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{45D716A4-87A7-485E-9779-B66FB57F6609}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45D716A4-87A7-485E-9779-B66FB57F6609}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45D716A4-87A7-485E-9779-B66FB57F6609}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{45D716A4-87A7-485E-9779-B66FB57F6609}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7D4CDE67-5816-4672-BA2A-3AD52C445E20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7D4CDE67-5816-4672-BA2A-3AD52C445E20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D4CDE67-5816-4672-BA2A-3AD52C445E20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D4CDE67-5816-4672-BA2A-3AD52C445E20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A62315C0-B539-4D01-B349-40F6CD382DDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A62315C0-B539-4D01-B349-40F6CD382DDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A62315C0-B539-4D01-B349-40F6CD382DDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A62315C0-B539-4D01-B349-40F6CD382DDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
