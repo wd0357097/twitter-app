@@ -6,6 +6,7 @@ namespace twitter_app_console
 {
     public interface IReportingData
     {
+        TimeSpan DateStartTime { get; set; }
         int TotalNumberOfTweets { get; set; }
         double AverageNumberOfTweets(double time);
         string TopEmojisInTweets(int number);

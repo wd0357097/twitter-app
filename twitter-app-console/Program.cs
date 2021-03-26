@@ -21,7 +21,7 @@ namespace twitter_app_console
             //var sampleStream = userClient.Streams.CreateSampleStream();
             //sampleStream.TweetReceived += (sender, eventArgs) =>
             //{
-            //    Console.WriteLine(eventArgs.Tweet);
+            //    Console.WriteLine(eventArgs.Tweet.);
             //};
 
             // Event handlers to report data 
@@ -32,31 +32,35 @@ namespace twitter_app_console
             Console.WriteLine("Press any key to start the twitter stream...");
             Console.ReadKey();// wait for the 'any key' to be pressed, 'where's the any key??'
             Console.WriteLine();// for spacing 
-
-            // get the reporting data
-            data.ReportingData += (sender, eventArgs) =>
+                                // get the reporting data
+            //CountDownTimer();
+            data.ReportingData += (s, e) =>
             {
-                Console.Write($"\r Total Number Of Tweets: {eventArgs.TotalNumberOfTweets}");
-                Console.WriteLine();
-                Console.Write($"\r Average Number Of Tweets Per Hour: {eventArgs.AverageNumberOfTweets(TimeSpan.FromHours(1).TotalHours)}");
-                Console.WriteLine();
-                Console.Write($"\r Average Number Of Tweets Per Minute: {eventArgs.AverageNumberOfTweets(TimeSpan.FromMinutes(1).TotalMinutes)}");
-                Console.WriteLine();
-                Console.Write($"\r Average Number Of Tweets Per Second: {eventArgs.AverageNumberOfTweets(TimeSpan.FromSeconds(1).TotalSeconds)}");
-                Console.WriteLine();
+                Console.SetCursorPosition(0, 2);
+                Console.Write($"{e.ToString()}");
+                // Console.WriteLine($"This data will update in {}");
             };
-
 
             // start the stream
 
             await data.StartStreamAsync("https://api.twitter.com/2/tweets/sample/stream");
             Console.WriteLine("Press any key to STOP the twitter stream...");
             Console.ReadKey();
-            var tokenSource = new CancellationTokenSource();
-            var token = tokenSource.Token;
-            //https://www.c-sharpcorner.com/UploadFile/80ae1e/canceling-a-running-task/ TODO
-            tokenSource.Cancel();
+            //var tokenSource = new CancellationTokenSource();
+            //var token = tokenSource.Token;
+            ////https://www.c-sharpcorner.com/UploadFile/80ae1e/canceling-a-running-task/ TODO
+            //tokenSource.Cancel();
 
+        }
+
+        static void CountDownTimer() 
+        {
+            for (int a = 10; a >= 0; a--)
+            {
+                Console.SetCursorPosition(0, 2);
+                Console.WriteLine("Generating Preview in {0} ", a);  // Override complete previous contents
+                Thread.Sleep(1000);
+            }
         }
     }
 }

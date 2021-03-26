@@ -27,8 +27,12 @@ namespace twitter_app_console
         public event EventHandler<ReportingData> ReportingData;
         public async Task StartStreamAsync(string url)
         {
+            var startTime = DateTime.Now.TimeOfDay;
             int numberOfTweets = 0;
-            var data = new ReportingData();
+            var data = new ReportingData
+            {
+                DateStartTime = startTime
+            };
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             var response = await _client.SendAsync(
                 request,
