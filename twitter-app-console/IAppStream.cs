@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace twitter_app_console
 {
-    interface IAppStream
+    interface IAppStream 
     {
-        event EventHandler<IReportingData> ReportingData;
+        event EventHandler<ReportingData> ReportingData;
         Task StartStreamAsync(string url);
     }
 }

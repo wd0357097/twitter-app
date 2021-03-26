@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Configuration;
@@ -14,11 +12,8 @@ namespace twitter_app_console
     public class TwitterStream : IAppStream
     {
         private HttpClient _client;
-        private int numberOfTweets;
 
-        public event EventHandler<IReportingData> ReportingData;
-
-        public TwitterStream() 
+        public TwitterStream()
         {
             InitializeHttpClient();
         }
@@ -28,8 +23,12 @@ namespace twitter_app_console
             _client = client;
         }
 
+
+        public event EventHandler<ReportingData> ReportingData;
         public async Task StartStreamAsync(string url)
         {
+            int numberOfTweets = 0;
+            var data = new ReportingData();
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             var response = await _client.SendAsync(
                 request,
@@ -41,31 +40,14 @@ namespace twitter_app_console
                 numberOfTweets++;
                 var tweet = reader.ReadLine();
                 var tweetObject = JsonConvert.DeserializeObject<TwitterResponse>(tweet);
-                //Console.WriteLine(tweet);
-                //Console.WriteLine("Number Of Tweets: " + this.TotalNumberOfTweets);
+                data.TotalNumberOfTweets = numberOfTweets;
+                OnProcessCompleted(data);// notify
             }
         }
 
-        public int TotalNumberOfTweets => numberOfTweets;
-
-        public decimal PercentOfTweetsThatContainsEmojis => throw new NotImplementedException();
-
-        public string TopHashTags => throw new NotImplementedException();
-
-        public decimal TweetsThatContainUrl => throw new NotImplementedException();
-
-        public decimal TweetsThatContainPhotoUrl => throw new NotImplementedException();
-
-        public string TopDomainsOfUrlsInTweets => throw new NotImplementedException();
-
-        public int AverageNumberOfTweets(TimeSpan time)
+        private void OnProcessCompleted(ReportingData e)
         {
-            throw new NotImplementedException();
-        }
-
-        public string TopEmojisInTweets(int number)
-        {
-            throw new NotImplementedException();
+            ReportingData?.Invoke(this, e);
         }
 
         private void InitializeHttpClient()
