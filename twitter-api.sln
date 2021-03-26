@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "twitter-app-api", "twitter-
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "twitter-app-console", "twitter-app-console\twitter-app-console.csproj", "{A62315C0-B539-4D01-B349-40F6CD382DDA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "twitter-app-tests", "twitter-app-tests\twitter-app-tests.csproj", "{A3872BBC-A354-4ED0-B037-9E44C3B931D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A62315C0-B539-4D01-B349-40F6CD382DDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A62315C0-B539-4D01-B349-40F6CD382DDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A62315C0-B539-4D01-B349-40F6CD382DDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3872BBC-A354-4ED0-B037-9E44C3B931D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3872BBC-A354-4ED0-B037-9E44C3B931D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3872BBC-A354-4ED0-B037-9E44C3B931D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3872BBC-A354-4ED0-B037-9E44C3B931D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
