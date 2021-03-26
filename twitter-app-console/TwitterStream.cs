@@ -11,10 +11,13 @@ using Newtonsoft.Json;
 
 namespace twitter_app_console
 {
-    public class TwitterStream : IAppStream, IReportingData
+    public class TwitterStream : IAppStream
     {
         private HttpClient _client;
-        private int numberOfTweets; 
+        private int numberOfTweets;
+
+        public event EventHandler<IReportingData> ReportingData;
+
         public TwitterStream() 
         {
             InitializeHttpClient();
@@ -38,8 +41,8 @@ namespace twitter_app_console
                 numberOfTweets++;
                 var tweet = reader.ReadLine();
                 var tweetObject = JsonConvert.DeserializeObject<TwitterResponse>(tweet);
-                Console.WriteLine(tweet);
-                Console.WriteLine("Number Of Tweets: " + this.TotalNumberOfTweets);
+                //Console.WriteLine(tweet);
+                //Console.WriteLine("Number Of Tweets: " + this.TotalNumberOfTweets);
             }
         }
 
