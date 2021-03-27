@@ -8,7 +8,12 @@ namespace twitter_app_console
 {
     public class ReportingData : EventArgs, IReportingData
     {
-        private Dictionary<string, int> emojiesInTweets = new Dictionary<string, int>();
+        private Dictionary<string, int> _emojiesInTweets;
+
+        public ReportingData() 
+        {
+            _emojiesInTweets = new Dictionary<string, int>();
+        }
 
         public List<TwitterResponse> TwitterResponses { get; set; }
         public int TotalNumberOfTweets { get; set; }
@@ -34,22 +39,21 @@ namespace twitter_app_console
             var match = Regex.Match(this.CurrentTweet.Data.Text, regex, RegexOptions.IgnoreCase);
             if (match.Success)
             {
-                if (emojiesInTweets.ContainsKey(match.Value))
+                if (_emojiesInTweets.ContainsKey(match.Value))
                 {
-                    var value = emojiesInTweets.First(x => x.Key == match.Value).Value;
-                    emojiesInTweets[match.Value] = value + 1;
+                    var value = _emojiesInTweets.First(x => x.Key == match.Value).Value;
+                    _emojiesInTweets[match.Value] = value + 1;
                 }
                 else
                 {
+                    _emojiesInTweets.Add(match.Value, 1);
                 }
-                    emojiesInTweets.Add(match.Value, 1);
-
             }
-            if(emojiesInTweets.Count > 0)
+            if(_emojiesInTweets.Count > 0)
             {
-                emojiesInTweets.OrderBy(kvp => kvp.Value).ToDictionary(x => x.Key, x => x.Value);
+                _emojiesInTweets.OrderBy(kvp => kvp.Value).ToDictionary(x => x.Key, x => x.Value);
             }
-            return emojiesInTweets;
+            return _emojiesInTweets;
         }
 
         public override string ToString()
