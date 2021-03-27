@@ -44,8 +44,8 @@ namespace twitter_app_console
             while (!reader.EndOfStream)
             {
                 var tweet = reader.ReadLine();
-                var tweetObject = JsonConvert.DeserializeObject<TwitterResponse>(tweet);
-                data.TwitterResponses.Add(tweetObject);
+                data.CurrentTweet = JsonConvert.DeserializeObject<TwitterResponse>(tweet);
+                data.TwitterResponses.Add(data.CurrentTweet);
                 data.TotalNumberOfTweets++;
                 OnProcessCompleted(data);// notify
             }
