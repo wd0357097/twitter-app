@@ -22,7 +22,7 @@ namespace twitter_app_console
             data.ReportingData += (s, e) =>
             {
                 Console.SetCursorPosition(0, 2);
-                Console.Write($"{e.ToString()}");
+                Console.Write($"\r{e.ToString()}");
             };
 
             // start the stream
