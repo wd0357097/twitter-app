@@ -11,10 +11,10 @@ namespace twitter_app_console
         int TotalNumberOfTweets { get; set; }
         double AverageNumberOfTweets(double time);
         Dictionary<string, int> EmojisInTweets();
-        decimal PercentOfTweetsThatContainsEmojis { get; set; }
+        double PercentOfTweetsThatContainsEmojis { get; }
         string TopHashTags { get; set; }
-        decimal TweetsThatContainUrl { get; set; }
-        decimal TweetsThatContainPhotoUrl { get; set; }
+        double TweetsThatContainUrl { get; set; }
+        double TweetsThatContainPhotoUrl { get; set; }
         string TopDomainsOfUrlsInTweets { get; set; }
         TimeSpan TimeCounter { get; }
     }

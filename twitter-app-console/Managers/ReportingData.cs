@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -15,12 +14,18 @@ namespace twitter_app_console
             _emojiesInTweets = new Dictionary<string, int>();
         }
 
-        public List<TwitterResponse> TwitterResponses { get; set; }
         public int TotalNumberOfTweets { get; set; }
-        public decimal PercentOfTweetsThatContainsEmojis { get; set; }
+        public double PercentOfTweetsThatContainsEmojis 
+        { 
+            get 
+            { 
+                var value = (this._emojiesInTweets.Count() / TotalNumberOfTweets) * 100;
+                return value;
+            }
+        }
         public string TopHashTags { get; set; }
-        public decimal TweetsThatContainUrl { get; set; }
-        public decimal TweetsThatContainPhotoUrl { get; set; }
+        public double TweetsThatContainUrl { get; set; }
+        public double TweetsThatContainPhotoUrl { get; set; }
         public string TopDomainsOfUrlsInTweets { get; set; }
         public TimeSpan DateStartTime { get; set; }
 
@@ -49,21 +54,22 @@ namespace twitter_app_console
                     _emojiesInTweets.Add(match.Value, 1);
                 }
             }
-            if(_emojiesInTweets.Count > 0)
+            if (_emojiesInTweets.Count > 0)
             {
-                _emojiesInTweets.OrderBy(kvp => kvp.Value).ToDictionary(x => x.Key, x => x.Value);
+                _emojiesInTweets = _emojiesInTweets.OrderByDescending(kvp => kvp.Value).ToDictionary(x => x.Key, x => x.Value);
             }
             return _emojiesInTweets;
         }
 
         public override string ToString()
         {
+            var emoji = EmojisInTweets().FirstOrDefault();
             return
                 $"Total Number Of Tweets: {this.TotalNumberOfTweets}  \r\n" +
                 $"Projected Average Number Of Tweets Per Hour: {this.AverageNumberOfTweets(TimeCounter.TotalHours)} \r\n" +
                 $"Projected Average Number Of Tweets Per Minute: {this.AverageNumberOfTweets(TimeCounter.TotalMinutes)} \r\n" +
                 $"Average Number Of Tweets Per Second: {this.AverageNumberOfTweets(TimeCounter.TotalSeconds)} \r\n" +
-                $"#1 Emojis in Tweets: {this.EmojisInTweets().FirstOrDefault()} \r\n" +
+                $"#1 Emojis in Tweets: {emoji.Key} : Appeared: {emoji.Value} time(s) \r\n" +
                 $"Percent of Tweets that Contain Emojis: {this.PercentOfTweetsThatContainsEmojis} \r\n" +
                 $"#1 HashTag: {this.TopHashTags} \r\n" +
                 $"Percent of Tweets that contain a url: {this.TweetsThatContainUrl} \r\n" +

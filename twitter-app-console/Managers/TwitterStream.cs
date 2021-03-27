@@ -24,30 +24,38 @@ namespace twitter_app_console
             _client = client;
         }
 
-
         public event EventHandler<ReportingData> ReportingData;
         public async Task StartStreamAsync(string url)
         {
-            // reporting data
-            var data = new ReportingData
+            try
             {
-                DateStartTime = DateTime.Now.TimeOfDay,
-                TwitterResponses = new List<TwitterResponse>(),         
-            };
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var response = await _client.SendAsync(
-                request,
-                HttpCompletionOption.ResponseHeadersRead);
-            var body = await response.Content.ReadAsStreamAsync();
-            var reader = new StreamReader(body);
-            
-            while (!reader.EndOfStream)
+                // reporting data
+                var data = new ReportingData
+                {
+                    DateStartTime = DateTime.Now.TimeOfDay,
+                };
+                var request = new HttpRequestMessage(HttpMethod.Get, url);
+                var response = await _client.SendAsync(
+                    request,
+                    HttpCompletionOption.ResponseHeadersRead);
+                var body = await response.Content.ReadAsStreamAsync();
+                var reader = new StreamReader(body);
+
+                while (!reader.EndOfStream)
+                {
+                    var tweet = reader.ReadLine();
+                    data.CurrentTweet = JsonConvert.DeserializeObject<TwitterResponse>(tweet);
+                    // make sure the current tweet is not null
+                    if (data.CurrentTweet != null)
+                    {
+                        data.TotalNumberOfTweets++;
+                        OnProcessCompleted(data);// notify
+                    }
+                }
+            }
+            catch(Exception ex)
             {
-                var tweet = reader.ReadLine();
-                data.CurrentTweet = JsonConvert.DeserializeObject<TwitterResponse>(tweet);
-                data.TwitterResponses.Add(data.CurrentTweet);
-                data.TotalNumberOfTweets++;
-                OnProcessCompleted(data);// notify
+                throw ex;
             }
         }
 
