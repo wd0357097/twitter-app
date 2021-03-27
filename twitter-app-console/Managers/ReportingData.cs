@@ -21,14 +21,8 @@ namespace twitter_app_console
         public TwitterResponse CurrentTweet { get; set; }
 
         public int TotalNumberOfTweets { get; set; }
-        public double PercentOfTweetsThatContainsEmojis 
-        { 
-            get 
-            {
-                var value = (this._emojiesInTweets.Count() / this.TotalNumberOfTweets) * 100;
-                return value;
-            }
-        }
+        public double PercentOfTweetsThatContainsEmojis => Math.Round(Convert.ToDouble(this._emojiesInTweets.Count()) / Convert.ToDouble(this.TotalNumberOfTweets) * 100, 2);
+
         public Dictionary<string, int> HashTagsInTweets() 
         {
             var regex = @"#\w+";
@@ -119,12 +113,12 @@ namespace twitter_app_console
                 $"Projected Average Number Of Tweets Per Hour: {this.AverageNumberOfTweets(TimeCounter.TotalHours)} \r\n" +
                 $"Projected Average Number Of Tweets Per Minute: {this.AverageNumberOfTweets(TimeCounter.TotalMinutes)} \r\n" +
                 $"Average Number Of Tweets Per Second: {this.AverageNumberOfTweets(TimeCounter.TotalSeconds)} \r\n" +
-                $"#1 Emojis in Tweets: {emoji.Key} : Appeared: {emoji.Value} time(s) \r\n" +
+                $"Top Emoji in Tweets: {emoji.Key} : Appeared: {emoji.Value} time(s) \r\n" +
                 $"Percent of Tweets that Contain Emojis: {this.PercentOfTweetsThatContainsEmojis} \r\n" +
-                $"#1 HashTag: {hash.Key} : Appeared: {hash.Value} time(s) \r\n" +
+                $"Top HashTag: {hash.Key} : Appeared: {hash.Value} time(s) \r\n" +
                 $"Percent of Tweets that contain a url: {this.PercentOfTweetsThatContainUrl} \r\n" +
                 $"Percent of Tweets that contain a photo url: {this.TweetsThatContainPhotoUrl} \r\n" +
-                $"#1 url in Tweets: {UrlsInTweets().FirstOrDefault().Key} \r\n";
+                $"Top url in Tweets: {UrlsInTweets().FirstOrDefault().Key} \r\n";
         }
     }
 }
