@@ -32,35 +32,19 @@ namespace twitter_app_console
             Console.WriteLine("Press any key to start the twitter stream...");
             Console.ReadKey();// wait for the 'any key' to be pressed, 'where's the any key??'
             Console.WriteLine();// for spacing 
-                                // get the reporting data
-            //CountDownTimer();
+
+            // get the reporting data
             data.ReportingData += (s, e) =>
             {
                 Console.SetCursorPosition(0, 2);
                 Console.Write($"{e.ToString()}");
-                // Console.WriteLine($"This data will update in {}");
             };
 
             // start the stream
-
             await data.StartStreamAsync("https://api.twitter.com/2/tweets/sample/stream");
             Console.WriteLine("Press any key to STOP the twitter stream...");
             Console.ReadKey();
-            //var tokenSource = new CancellationTokenSource();
-            //var token = tokenSource.Token;
-            ////https://www.c-sharpcorner.com/UploadFile/80ae1e/canceling-a-running-task/ TODO
-            //tokenSource.Cancel();
 
-        }
-
-        static void CountDownTimer() 
-        {
-            for (int a = 10; a >= 0; a--)
-            {
-                Console.SetCursorPosition(0, 2);
-                Console.WriteLine("Generating Preview in {0} ", a);  // Override complete previous contents
-                Thread.Sleep(1000);
-            }
         }
     }
 }

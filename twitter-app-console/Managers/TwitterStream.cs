@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Configuration;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace twitter_app_console
 {
@@ -27,11 +28,11 @@ namespace twitter_app_console
         public event EventHandler<ReportingData> ReportingData;
         public async Task StartStreamAsync(string url)
         {
-            var startTime = DateTime.Now.TimeOfDay;
-            int numberOfTweets = 0;
+            // reporting data
             var data = new ReportingData
             {
-                DateStartTime = startTime
+                DateStartTime = DateTime.Now.TimeOfDay,
+                TwitterResponses = new List<TwitterResponse>(),         
             };
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             var response = await _client.SendAsync(
@@ -39,12 +40,13 @@ namespace twitter_app_console
                 HttpCompletionOption.ResponseHeadersRead);
             var body = await response.Content.ReadAsStreamAsync();
             var reader = new StreamReader(body);
+            
             while (!reader.EndOfStream)
             {
-                numberOfTweets++;
                 var tweet = reader.ReadLine();
                 var tweetObject = JsonConvert.DeserializeObject<TwitterResponse>(tweet);
-                data.TotalNumberOfTweets = numberOfTweets;
+                data.TwitterResponses.Add(tweetObject);
+                data.TotalNumberOfTweets++;
                 OnProcessCompleted(data);// notify
             }
         }

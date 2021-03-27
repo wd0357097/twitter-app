@@ -15,5 +15,6 @@ namespace twitter_app_console
         decimal TweetsThatContainUrl { get; set; }
         decimal TweetsThatContainPhotoUrl { get; set; }
         string TopDomainsOfUrlsInTweets { get; set; }
+        TimeSpan TimeCounter { get; }
     }
 }
