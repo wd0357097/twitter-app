@@ -46,6 +46,18 @@ namespace twitter_app_console
             return _hashTagsTweets;
         }
 
+        public int PhotoUrlsInTweets()
+        {
+            int count = 0;
+            var regex = @"[^\\s] + (.*?)\\.(jpg | jpeg | png | gif)$";// this may not be right
+            var match = Regex.Match(this.CurrentTweet.Data.Text, regex, RegexOptions.IgnoreCase);
+            if (match.Success)
+            {
+                count++;
+            }
+            return count;
+        }
+
         public Dictionary<string, int> UrlsInTweets()
         {
             var regex = @"(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])";
@@ -68,7 +80,7 @@ namespace twitter_app_console
             }
             return _urlTweets;
         }
-        public double PercentOfTweetsThatContainPhotoUrl { get; }
+        public double PercentOfTweetsThatContainPhotoUrl => this.CalculatePercentage(this.PhotoUrlsInTweets());
         public string TopDomainsOfUrlsInTweets { get; set; }
         public TimeSpan DateStartTime { get; set; }
 
