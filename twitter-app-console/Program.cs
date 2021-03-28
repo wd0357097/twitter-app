@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Configuration;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,7 +27,7 @@ namespace twitter_app_console
             };
 
             // start the stream
-            await data.StartStreamAsync("https://api.twitter.com/2/tweets/sample/stream");
+            await data.StartStreamAsync(ConfigurationManager.AppSettings["twitter-stream"]);
         }
     }
 }
