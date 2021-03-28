@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace twitter_app_console
 {
@@ -13,9 +12,8 @@ namespace twitter_app_console
         Dictionary<string, int> EmojisInTweets();
         double PercentOfTweetsThatContainsEmojis { get; }
         Dictionary<string, int> HashTagsInTweets();
-        double PercentOfTweetsThatContainUrl { get; set; }
-        double TweetsThatContainPhotoUrl { get; set; }
-        string TopDomainsOfUrlsInTweets { get; set; }
+        double PercentOfTweetsThatContainUrl { get; }
+        double PercentOfTweetsThatContainPhotoUrl { get; }
         Dictionary<string, int> UrlsInTweets();
         TimeSpan TimeCounter { get; }
     }

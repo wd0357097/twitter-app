@@ -11,7 +11,7 @@ namespace twitter_app_console
         private Dictionary<string, int> _hashTagsTweets;
         private Dictionary<string, int> _urlTweets;
 
-        public ReportingData() 
+        public ReportingData()
         {
             _emojiesInTweets = new Dictionary<string, int>();
             _hashTagsTweets = new Dictionary<string, int>();
@@ -21,9 +21,9 @@ namespace twitter_app_console
         public TwitterResponse CurrentTweet { get; set; }
 
         public int TotalNumberOfTweets { get; set; }
-        public double PercentOfTweetsThatContainsEmojis => Math.Round(Convert.ToDouble(this._emojiesInTweets.Count()) / Convert.ToDouble(this.TotalNumberOfTweets) * 100, 2);
+        public double PercentOfTweetsThatContainsEmojis => this.CalculatePercentage(this._emojiesInTweets.Count());
 
-        public Dictionary<string, int> HashTagsInTweets() 
+        public Dictionary<string, int> HashTagsInTweets()
         {
             var regex = @"#\w+";
             var match = Regex.Match(this.CurrentTweet.Data.Text, regex, RegexOptions.IgnoreCase);
@@ -46,9 +46,9 @@ namespace twitter_app_console
             return _hashTagsTweets;
         }
 
-        public Dictionary<string, int> UrlsInTweets() 
+        public Dictionary<string, int> UrlsInTweets()
         {
-            var regex = @"#\w+";// TODO
+            var regex = @"(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])";
             var match = Regex.Match(this.CurrentTweet.Data.Text, regex, RegexOptions.IgnoreCase);
             if (match.Success)
             {
@@ -64,17 +64,17 @@ namespace twitter_app_console
             }
             if (this._urlTweets.Count > 0)
             {
-                this._urlTweets = this._hashTagsTweets.OrderByDescending(kvp => kvp.Value).ToDictionary(x => x.Key, x => x.Value);
+                this._urlTweets = this._urlTweets.OrderByDescending(kvp => kvp.Value).ToDictionary(x => x.Key, x => x.Value);
             }
             return _urlTweets;
         }
-        public double TweetsThatContainPhotoUrl { get; set; }
+        public double PercentOfTweetsThatContainPhotoUrl { get; }
         public string TopDomainsOfUrlsInTweets { get; set; }
         public TimeSpan DateStartTime { get; set; }
 
         public TimeSpan TimeCounter => DateTime.Now.TimeOfDay - this.DateStartTime;
 
-        public double PercentOfTweetsThatContainUrl { get; set; }
+        public double PercentOfTweetsThatContainUrl => this.CalculatePercentage(this._urlTweets.Count());
 
         public double AverageNumberOfTweets(double time)
         {
@@ -104,10 +104,16 @@ namespace twitter_app_console
             return _emojiesInTweets;
         }
 
+        private double CalculatePercentage(int dictionaryCount) 
+        {
+            return Math.Round(Convert.ToDouble(dictionaryCount) / Convert.ToDouble(this.TotalNumberOfTweets) * 100, 2);
+        }
+
         public override string ToString()
         {
             var emoji = EmojisInTweets().FirstOrDefault();
             var hash = HashTagsInTweets().FirstOrDefault();
+            var url = UrlsInTweets().FirstOrDefault();
             return
                 $"Total Number Of Tweets: {this.TotalNumberOfTweets}  \r\n" +
                 $"Projected Average Number Of Tweets Per Hour: {this.AverageNumberOfTweets(TimeCounter.TotalHours)} \r\n" +
@@ -117,8 +123,8 @@ namespace twitter_app_console
                 $"Percent of Tweets that Contain Emojis: {this.PercentOfTweetsThatContainsEmojis} \r\n" +
                 $"Top HashTag: {hash.Key} : Appeared: {hash.Value} time(s) \r\n" +
                 $"Percent of Tweets that contain a url: {this.PercentOfTweetsThatContainUrl} \r\n" +
-                $"Percent of Tweets that contain a photo url: {this.TweetsThatContainPhotoUrl} \r\n" +
-                $"Top url in Tweets: {UrlsInTweets().FirstOrDefault().Key} \r\n";
+                $"Percent of Tweets that contain a photo url: {this.PercentOfTweetsThatContainPhotoUrl} \r\n" +
+                $"Top url in Tweets: {url.Key} : Appeared: {url.Value} time(s) \r\n";
         }
     }
 }
