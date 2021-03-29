@@ -13,6 +13,7 @@ namespace twitter_app_console.Extensions
             return Math.Round(Convert.ToDouble(count) / Convert.ToDouble(totalNumber) * 100, 2);
         }
 
+        // TODO, add change to look for all matches in a string
         public static Dictionary<string, int> RegexDataToDictionary(this Dictionary<string, int> dictionary, string regex, string searchText)
         {
             var match = Regex.Match(searchText, regex, RegexOptions.IgnoreCase);
