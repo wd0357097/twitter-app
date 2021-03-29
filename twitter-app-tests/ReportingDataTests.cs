@@ -11,10 +11,8 @@ namespace twitter_app_tests
     [TestClass]
     public class ReportingDataTests
     {
-        private string _twitterJson;
         private IReportingData _data;
         private List<TwitterResponse> _twitterResponse;
-        //private List<Twitter>
 
         [TestInitialize]
         public void Init() 
@@ -30,13 +28,11 @@ namespace twitter_app_tests
         [TestMethod]
         public void TestTotalNumberOfTweets()
         {
-            var count = 0; 
             foreach (var t in _twitterResponse)
             {
                 _data.CurrentTweet = t;
-                count++;
             }
-            _data.TotalNumberOfTweets.ShouldBe(5);
+            _data.TotalNumberOfTweets.ShouldBe(76);
         }
 
     }

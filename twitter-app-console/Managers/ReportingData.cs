@@ -15,6 +15,7 @@ namespace twitter_app_console
         private Dictionary<string, int> _hashTagsTweets;
         private Dictionary<string, int> _urlTweets;
         private int photoUrlInTweetCounter = 0;
+        private TwitterResponse currentTweet;
 
         public ReportingData()
         {
@@ -26,7 +27,7 @@ namespace twitter_app_console
         /// <summary>
         /// stores the current tweet in an object
         /// </summary>
-        public TwitterResponse CurrentTweet { get; set; }
+        public TwitterResponse CurrentTweet { get => currentTweet; set { currentTweet = value; this.TotalNumberOfTweets++; } }
         /// <summary>
         /// stores the total number of tweets processed 
         /// </summary>

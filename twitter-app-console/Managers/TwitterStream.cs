@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Configuration;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace twitter_app_console
 {
@@ -48,7 +47,6 @@ namespace twitter_app_console
                     // make sure the current tweet is not null
                     if (data.CurrentTweet != null)
                     {
-                        data.TotalNumberOfTweets++;
                         OnProcessCompleted(data);// notify
                     }
                 }
