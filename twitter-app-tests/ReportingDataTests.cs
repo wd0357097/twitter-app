@@ -48,25 +48,25 @@ namespace twitter_app_tests
         [TestMethod]
         public void top_emojis_in_tweets_test()
         {
-            _data.EmojisInTweets().FirstOrDefault().Key.ShouldBe("“ ");
+            _data.EmojisInTweets().FirstOrDefault().Key.ShouldBe("🥺");
         }
 
         [TestMethod]
         public void percent_of_tweets_that_contain_emojis_test()
         {
-            _data.PercentOfTweetsThatContainsEmojis.ShouldBe(21.05);
+            _data.PercentOfTweetsThatContainsEmojis.ShouldBe(31.58d);
         }
 
         [TestMethod]
         public void top_hash_tags_in_tweets_test()
         {
-            _data.HashTagsInTweets().FirstOrDefault().Key.ShouldBe("#春から立教");
+            _data.HashTagsInTweets().FirstOrDefault().Key.ShouldBe("#RealmenteZacatecas");
         }
 
         [TestMethod]
         public void percent_of_tweets_that_contain_urls_test()
         {
-            _data.PercentOfTweetsThatContainUrl.ShouldBe(39.47d);
+            _data.PercentOfTweetsThatContainUrl.ShouldBe(42.11d);
         }
 
         [TestMethod]
@@ -78,7 +78,7 @@ namespace twitter_app_tests
         [TestMethod]
         public void top_urls_in_tweets_test()
         {
-            _data.UrlsInTweets().FirstOrDefault().Key.ShouldBe("https://t.co/qPPF8CeGjF");
+            _data.UrlsInTweets().FirstOrDefault().Key.ShouldBe("https://test.jpg");
         }
     }
 }

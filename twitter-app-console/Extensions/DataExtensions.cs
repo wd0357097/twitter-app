@@ -13,20 +13,22 @@ namespace twitter_app_console.Extensions
             return Math.Round(Convert.ToDouble(count) / Convert.ToDouble(totalNumber) * 100, 2);
         }
 
-        // TODO, add change to look for all matches in a string
         public static Dictionary<string, int> RegexDataToDictionary(this Dictionary<string, int> dictionary, string regex, string searchText)
         {
-            var match = Regex.Match(searchText, regex, RegexOptions.IgnoreCase);
-            if (match.Success)
+            var dicRegex = new Regex(regex, RegexOptions.IgnoreCase);
+            foreach (Match match in dicRegex.Matches(searchText))
             {
-                if (dictionary.ContainsKey(match.Value))
+                if (match.Success)
                 {
-                    var value = dictionary.First(x => x.Key == match.Value).Value;
-                    dictionary[match.Value] = value + 1;
-                }
-                else
-                {
-                    dictionary.Add(match.Value, 1);
+                    if (dictionary.ContainsKey(match.Value))
+                    {
+                        var value = dictionary.First(x => x.Key == match.Value).Value;
+                        dictionary[match.Value] = value + 1;
+                    }
+                    else
+                    {
+                        dictionary.Add(match.Value, 1);
+                    }
                 }
             }
             if (dictionary.Count > 0)
