@@ -1,8 +1,8 @@
 ﻿
 using Newtonsoft.Json;
 
-namespace twitter_app_console
-{
+namespace twitter_data.Entities
+{ 
     public class TwitterResponse
     {
         [JsonProperty("data")]

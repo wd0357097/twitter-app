@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
-namespace twitter_app_console.Extensions
+namespace twitter_data.Extensions
 {
     public static class DataExtensions
     {
@@ -13,6 +12,13 @@ namespace twitter_app_console.Extensions
             return Math.Round(Convert.ToDouble(count) / Convert.ToDouble(totalNumber) * 100, 2);
         }
 
+        /// <summary>
+        /// if regex matches add to dictionary object
+        /// </summary>
+        /// <param name="dictionary"></param>
+        /// <param name="regex"></param>
+        /// <param name="searchText"></param>
+        /// <returns>sorted dictionary</returns>
         public static Dictionary<string, int> RegexDataToDictionary(this Dictionary<string, int> dictionary, string regex, string searchText)
         {
             var dicRegex = new Regex(regex, RegexOptions.IgnoreCase);

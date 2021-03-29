@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
+using twitter_data.Managers;
 
-namespace twitter_app_console
+namespace twitter_data.Interface
 {
-    interface IAppStream 
+    public interface IAppStream 
     {
         event EventHandler<ReportingData> ReportingData;
         Task StartStreamAsync(string url);

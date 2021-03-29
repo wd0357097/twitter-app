@@ -5,7 +5,9 @@ using Shouldly;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using twitter_app_console;
+using twitter_data.Entities;
+using twitter_data.Interface;
+using twitter_data.Managers;
 
 namespace twitter_app_tests
 {

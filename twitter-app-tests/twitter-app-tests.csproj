@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\twitter-app-console\twitter-app-console.csproj" />
+    <ProjectReference Include="..\twitter-data\twitter-data.csproj" />
   </ItemGroup>
 
   <ItemGroup>

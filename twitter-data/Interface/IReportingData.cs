@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using twitter_data.Entities;
 
-namespace twitter_app_console
+namespace twitter_data.Interface
 {
     public interface IReportingData
     {

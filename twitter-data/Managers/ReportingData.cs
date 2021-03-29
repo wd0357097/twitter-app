@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using twitter_app_console.Extensions;
+using twitter_data.Entities;
+using twitter_data.Extensions;
+using twitter_data.Interface;
 
-namespace twitter_app_console
+namespace twitter_data.Managers
 {
     /// <summary>
     /// used for reporting twitter data stats

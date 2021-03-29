@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Configuration;
 using Newtonsoft.Json;
+using twitter_data.Entities;
+using twitter_data.Interface;
 
-namespace twitter_app_console
+namespace twitter_data.Managers
 {
     public class TwitterStream : IAppStream
     {
@@ -43,10 +45,11 @@ namespace twitter_app_console
                 while (!reader.EndOfStream)
                 {
                     var tweet = reader.ReadLine();
-                    data.CurrentTweet = JsonConvert.DeserializeObject<TwitterResponse>(tweet);
+                    var currentTweet = JsonConvert.DeserializeObject<TwitterResponse>(tweet);
                     // make sure the current tweet is not null
-                    if (data.CurrentTweet != null)
+                    if (currentTweet != null)
                     {
+                        data.CurrentTweet = currentTweet;
                         OnProcessCompleted(data);// notify
                     }
                 }

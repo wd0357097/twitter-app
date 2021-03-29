@@ -5,4 +5,8 @@
     <RootNamespace>twitter_app_ui</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\twitter-data\twitter-data.csproj" />
+  </ItemGroup>
+
 </Project>

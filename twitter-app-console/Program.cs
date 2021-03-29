@@ -3,6 +3,8 @@ using System;
 using System.Configuration;
 using System.Text;
 using System.Threading.Tasks;
+using twitter_data.Interface;
+using twitter_data.Managers;
 
 namespace twitter_app_console
 {
@@ -23,7 +25,7 @@ namespace twitter_app_console
             data.ReportingData += (s, e) =>
             {
                 Console.SetCursorPosition(0, 2);
-                Console.Write($"\r{e.ToString()}");
+                Console.Write($"\r{e}");
             };
 
             // start the stream
