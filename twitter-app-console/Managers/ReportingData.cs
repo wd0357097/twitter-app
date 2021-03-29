@@ -2,14 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using twitter_app_console.Extensions;
 
 namespace twitter_app_console
 {
+    /// <summary>
+    /// used for reporting twitter data stats
+    /// </summary>
     public class ReportingData : EventArgs, IReportingData
     {
         private Dictionary<string, int> _emojiesInTweets;
         private Dictionary<string, int> _hashTagsTweets;
         private Dictionary<string, int> _urlTweets;
+        private int photoUrlInTweetCounter = 0;
 
         public ReportingData()
         {
@@ -18,109 +23,88 @@ namespace twitter_app_console
             _urlTweets = new Dictionary<string, int>();
         }
 
+        /// <summary>
+        /// stores the current tweet in an object
+        /// </summary>
         public TwitterResponse CurrentTweet { get; set; }
-
+        /// <summary>
+        /// stores the total number of tweets processed 
+        /// </summary>
         public int TotalNumberOfTweets { get; set; }
-        public double PercentOfTweetsThatContainsEmojis => this.CalculatePercentage(this._emojiesInTweets.Count());
-
-        public Dictionary<string, int> HashTagsInTweets()
+        /// <summary>
+        /// Start time of processing 
+        /// </summary>
+        public TimeSpan DateStartTime { get; set; }
+        /// <summary>
+        /// Time Counter used to determine the number of seconds between when data started to process
+        /// </summary>
+        public TimeSpan TimeCounter => DateTime.Now.TimeOfDay - this.DateStartTime;
+        /// <summary>
+        /// returns the percent of tweets that contain emojis
+        /// </summary>
+        public double PercentOfTweetsThatContainsEmojis => this._emojiesInTweets.Count().CalculatePercentage(this.TotalNumberOfTweets);
+        /// <summary>
+        /// returns the percent of tweets that contain photo urls
+        /// </summary>
+        public double PercentOfTweetsThatContainPhotoUrl => this.PhotoUrlsInTweets().CalculatePercentage(this.TotalNumberOfTweets);
+        /// <summary>
+        /// returns the percent of tweets that contain urls
+        /// </summary>
+        public double PercentOfTweetsThatContainUrl => this._urlTweets.Count().CalculatePercentage(this.TotalNumberOfTweets);
+        /// <summary>
+        /// calculates the photos in tweets based on the current tweet
+        /// </summary>
+        /// <returns></returns>
+        private int PhotoUrlsInTweets()
         {
-            var regex = @"#\w+";
-            var match = Regex.Match(this.CurrentTweet.Data.Text, regex, RegexOptions.IgnoreCase);
-            if (match.Success)
-            {
-                if (this._hashTagsTweets.ContainsKey(match.Value))
-                {
-                    var value = this._hashTagsTweets.First(x => x.Key == match.Value).Value;
-                    this._hashTagsTweets[match.Value] = value + 1;
-                }
-                else
-                {
-                    this._hashTagsTweets.Add(match.Value, 1);
-                }
-            }
-            if (this._hashTagsTweets.Count > 0)
-            {
-                this._hashTagsTweets = this._hashTagsTweets.OrderByDescending(kvp => kvp.Value).ToDictionary(x => x.Key, x => x.Value);
-            }
-            return _hashTagsTweets;
-        }
-
-        public int PhotoUrlsInTweets()
-        {
-            int count = 0;
             var regex = @"[^\\s] + (.*?)\\.(jpg | jpeg | png | gif)$";// this may not be right
             var match = Regex.Match(this.CurrentTweet.Data.Text, regex, RegexOptions.IgnoreCase);
             if (match.Success)
             {
-                count++;
+                photoUrlInTweetCounter++;
             }
-            return count;
+            return photoUrlInTweetCounter;
         }
-
-        public Dictionary<string, int> UrlsInTweets()
-        {
-            var regex = @"(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])";
-            var match = Regex.Match(this.CurrentTweet.Data.Text, regex, RegexOptions.IgnoreCase);
-            if (match.Success)
-            {
-                if (this._urlTweets.ContainsKey(match.Value))
-                {
-                    var value = this._urlTweets.First(x => x.Key == match.Value).Value;
-                    this._urlTweets[match.Value] = value + 1;
-                }
-                else
-                {
-                    this._urlTweets.Add(match.Value, 1);
-                }
-            }
-            if (this._urlTweets.Count > 0)
-            {
-                this._urlTweets = this._urlTweets.OrderByDescending(kvp => kvp.Value).ToDictionary(x => x.Key, x => x.Value);
-            }
-            return _urlTweets;
-        }
-        public double PercentOfTweetsThatContainPhotoUrl => this.CalculatePercentage(this.PhotoUrlsInTweets());
-        public string TopDomainsOfUrlsInTweets { get; set; }
-        public TimeSpan DateStartTime { get; set; }
-
-        public TimeSpan TimeCounter => DateTime.Now.TimeOfDay - this.DateStartTime;
-
-        public double PercentOfTweetsThatContainUrl => this.CalculatePercentage(this._urlTweets.Count());
-
+        /// <summary>
+        /// calculates the averages of tweets 
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns>average number (double)</returns>
         public double AverageNumberOfTweets(double time)
         {
             return Math.Round(TotalNumberOfTweets / time, 2);
         }
-
+        /// <summary>
+        /// returns a dictionary of hash tags in tweets
+        /// </summary>
+        /// <returns>dictionary</returns>
+        public Dictionary<string, int> HashTagsInTweets()
+        {
+            var regex = @"#\w+";
+            return this._hashTagsTweets.RegexDataToDictionary(regex, this.CurrentTweet.Data.Text);
+        }
+        /// <summary>
+        /// returns a dictionary of urls in tweets
+        /// </summary>
+        /// <returns>dictionary</returns>
+        public Dictionary<string, int> UrlsInTweets()
+        {
+            var regex = @"(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])";
+            return this._urlTweets.RegexDataToDictionary(regex, this.CurrentTweet.Data.Text);
+        }
+        /// <summary>
+        /// returns a dictionary of emojis in tweets
+        /// </summary>
+        /// <returns>dictionary</returns>
         public Dictionary<string, int> EmojisInTweets()
         {
             var regex = @"\u00a9|\u00ae|[\u2000-\u3300] |\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]";
-            var match = Regex.Match(this.CurrentTweet.Data.Text, regex, RegexOptions.IgnoreCase);
-            if (match.Success)
-            {
-                if (this._emojiesInTweets.ContainsKey(match.Value))
-                {
-                    var value = this._emojiesInTweets.First(x => x.Key == match.Value).Value;
-                    this._emojiesInTweets[match.Value] = value + 1;
-                }
-                else
-                {
-                    this._emojiesInTweets.Add(match.Value, 1);
-                }
-            }
-            if (this._emojiesInTweets.Count > 0)
-            {
-                this._emojiesInTweets = this._emojiesInTweets.OrderByDescending(kvp => kvp.Value).ToDictionary(x => x.Key, x => x.Value);
-            }
-            return _emojiesInTweets;
+            return this._emojiesInTweets.RegexDataToDictionary(regex, this.CurrentTweet.Data.Text);
         }
-
-        private double CalculatePercentage(int dictionaryCount) 
-        {
-            return Math.Round(Convert.ToDouble(dictionaryCount) / Convert.ToDouble(this.TotalNumberOfTweets) * 100, 2);
-        }
-
+        /// <summary>
+        /// override the 2 screen for display purposes 
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             var emoji = EmojisInTweets().FirstOrDefault();
@@ -136,7 +120,7 @@ namespace twitter_app_console
                 $"Top HashTag: {hash.Key} : Appeared: {hash.Value} time(s) \r\n" +
                 $"Percent of Tweets that contain a url: {this.PercentOfTweetsThatContainUrl} \r\n" +
                 $"Percent of Tweets that contain a photo url: {this.PercentOfTweetsThatContainPhotoUrl} \r\n" +
-                $"Top url in Tweets: {url.Key} : Appeared: {url.Value} time(s) \r\n";
+                $"Top urls in Tweets: {url.Key} : Appeared: {url.Value} time(s) \r\n";
         }
     }
 }
