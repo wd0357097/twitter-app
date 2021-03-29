@@ -66,13 +66,13 @@ namespace twitter_app_tests
         [TestMethod]
         public void percent_of_tweets_that_contain_urls_test()
         {
-            _data.PercentOfTweetsThatContainUrl.ShouldBe(38.16d);
+            _data.PercentOfTweetsThatContainUrl.ShouldBe(39.47d);
         }
 
         [TestMethod]
         public void percent_of_tweets_that_contain_photo_urls_test()
         {
-            _data.PercentOfTweetsThatContainPhotoUrl.ShouldBe(38.16d);
+            _data.PercentOfTweetsThatContainPhotoUrl.ShouldBe(1.32d);
         }
 
         [TestMethod]

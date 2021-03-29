@@ -68,7 +68,7 @@ namespace twitter_app_console
         /// <returns></returns>
         private int PhotoUrlsInTweets()
         {
-            var regex = @"[^\\s] + (.*?)\\.(jpg | jpeg | png | gif)$";// this may not be right
+            var regex = @"(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png|jpeg|bmp|tiff|tiff)";// this may not be right
             var match = Regex.Match(this.CurrentTweet.Data.Text, regex, RegexOptions.IgnoreCase);
             if (match.Success)
             {
