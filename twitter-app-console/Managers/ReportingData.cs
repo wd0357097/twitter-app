@@ -27,7 +27,17 @@ namespace twitter_app_console
         /// <summary>
         /// stores the current tweet in an object
         /// </summary>
-        public TwitterResponse CurrentTweet { get => currentTweet; set { currentTweet = value; this.TotalNumberOfTweets++; } }
+        public TwitterResponse CurrentTweet 
+        { get => currentTweet; 
+            set 
+            { 
+                currentTweet = value; 
+                this.TotalNumberOfTweets++;
+                this.EmojisInTweets();
+                this.HashTagsInTweets();
+                this.UrlsInTweets();
+            }
+        }
         /// <summary>
         /// stores the total number of tweets processed 
         /// </summary>
@@ -108,14 +118,14 @@ namespace twitter_app_console
         /// <returns></returns>
         public override string ToString()
         {
-            var emoji = EmojisInTweets().FirstOrDefault();
-            var hash = HashTagsInTweets().FirstOrDefault();
-            var url = UrlsInTweets().FirstOrDefault();
+            var emoji = _emojiesInTweets.FirstOrDefault();
+            var hash = _hashTagsTweets.FirstOrDefault();
+            var url = _urlTweets.FirstOrDefault();
             return
                 $"Total Number Of Tweets: {this.TotalNumberOfTweets}  \r\n" +
-                $"Projected Average Number Of Tweets Per Hour: {this.AverageNumberOfTweets(TimeCounter.TotalHours)} \r\n" +
-                $"Projected Average Number Of Tweets Per Minute: {this.AverageNumberOfTweets(TimeCounter.TotalMinutes)} \r\n" +
-                $"Average Number Of Tweets Per Second: {this.AverageNumberOfTweets(TimeCounter.TotalSeconds)} \r\n" +
+                $"Projected Average Number Of Tweets Per Hour: {this.AverageNumberOfTweets(this.TimeCounter.TotalHours)} \r\n" +
+                $"Projected Average Number Of Tweets Per Minute: {this.AverageNumberOfTweets(this.TimeCounter.TotalMinutes)} \r\n" +
+                $"Average Number Of Tweets Per Second: {this.AverageNumberOfTweets(this.TimeCounter.TotalSeconds)} \r\n" +
                 $"Top Emoji in Tweets: {emoji.Key} : Appeared: {emoji.Value} time(s) \r\n" +
                 $"Percent of Tweets that Contain Emojis: {this.PercentOfTweetsThatContainsEmojis} \r\n" +
                 $"Top HashTag: {hash.Key} : Appeared: {hash.Value} time(s) \r\n" +
