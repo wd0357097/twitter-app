@@ -13,12 +13,23 @@
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
     <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
     <PackageReference Include="coverlet.collector" Version="1.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="RichardSzalay.MockHttp" Version="6.0.0" />
     <PackageReference Include="Shouldly" Version="4.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Mocks\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\twitter-app-console\twitter-app-console.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Artifacts\TwitterSampleData.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
