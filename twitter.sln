@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "twitter-app-tests", "twitte
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "twitter-app-ui", "twitter-app-ui\twitter-app-ui.csproj", "{4914D279-7A42-4BEE-A702-47E5CC886DEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "twitter-data", "twitter-data\twitter-data.csproj", "{375713FB-6961-49F4-863F-560DB2FA9148}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "twitter-data", "twitter-data\twitter-data.csproj", "{375713FB-6961-49F4-863F-560DB2FA9148}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
