@@ -19,9 +19,6 @@ process.click(function () {
             url: 'Home/StartProcessing',
             type: 'GET',
             dataType: 'json', // added data type
-            success: function (res) {
-                console.log('Processing Message:', res);
-            }
         });
 
         console.log('Setting Timer');
@@ -35,16 +32,29 @@ process.click(function () {
                     console.log('Report Data:', res);
                     $('#number-of-tweets').text(res.totalNumberOfTweets);
                     $('#hour').text(res.averageNumberOfTweetsPerHour);
-                    $('#minute').text(res.averageNumberOfTweetsPerMinute);
                     $('#second').text(res.averageNumberOfTweetsPerSecond);
+                    $('#minute').text(res.averageNumberOfTweetsPerMinute);                
                     $('#url-percent').text(res.percentOfTweetsThatContainUrl+ '%');
                     $('#photo-percent').text(res.percentOfTweetsThatContainPhotoUrl + '%');
                     $('#emoji-percent').text(res.percentOfTweetsThatContainEmojis + '%');
+                    ToHtmlList($('#emoji-list'), res.top10EmojisInTweets);
+                    ToHtmlList($('#domains-list'), res.top10UrlTweets);
+                    ToHtmlList($('#hashtag-list'), res.top10HashTags);             
                 }
             });
-        }, 3000);// 5 seconds
+        }, 3000);// 3 seconds
     }
 });
+
+function ToHtmlList(element, collection)
+{
+    //clear the element
+    element.empty();
+    console.log('Collection', collection)
+    $.each(collection, function (key, value) {
+        element.append("<li>" + key + "<span> : " + value + "</span></li>")
+    });
+}
 
 function resetValues() {
     xhr = null;

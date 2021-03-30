@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using twitter_app_ui.Extensions;
 using twitter_app_ui.Models;
 using twitter_data.Interface;
 using twitter_data.Managers;
@@ -35,7 +34,7 @@ namespace twitter_app_ui.Controllers
             return View();
         }
 
-        public async Task<bool> StartProcessingAsync(CancellationToken cancellationToken)
+        public async Task StartProcessingAsync(CancellationToken cancellationToken)
         {
             IAppStream data = new TwitterStream(_configuration.GetSection("token").Value);
 
@@ -59,7 +58,7 @@ namespace twitter_app_ui.Controllers
             };
             // start the stream
             await data.StartStreamAsync(_configuration.GetSection("twitter-stream").Value, cancellationToken);
-            return true;
+            _cache.Set("ReportData", "");// clear the cache
         }
         [HttpGet]
         public JsonResult GetReportData()
@@ -67,7 +66,6 @@ namespace twitter_app_ui.Controllers
             var model = _cache.Get("ReportData");
             return Json(model);
         }
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
