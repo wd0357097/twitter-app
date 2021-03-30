@@ -49,5 +49,14 @@ namespace twitter_data.Extensions
             }
             return dictionary;
         }
+
+        public static Dictionary<string, int> OrderDictionary(this Dictionary<string, int> dictionary)
+        {
+            if (dictionary.Count > 0)
+            {
+                dictionary = dictionary.OrderByDescending(kvp => kvp.Value).ToDictionary(x => x.Key, x => x.Value);
+            }
+            return dictionary;
+        }
     }
 }

@@ -93,8 +93,23 @@ namespace twitter_data.Managers
         /// <returns>dictionary</returns>
         public Dictionary<string, int> HashTagsInTweets()
         {
-            var regex = @"#\w+";
-            return this._hashTagsTweets.RegexDataToDictionary(regex, this.CurrentTweet.Data.Text);
+            var hashTags = this.CurrentTweet.Data.Entities?.Hashtags;
+            if (hashTags != null)
+            {
+                foreach(var h in hashTags)
+                {
+                    if (_hashTagsTweets.ContainsKey(h.Tag))
+                    {
+                        var value = _hashTagsTweets.First(x => x.Key == h.Tag).Value;
+                        _hashTagsTweets[h.Tag] = value + 1;
+                    }
+                    else
+                    {
+                        _hashTagsTweets.Add(h.Tag, 1);
+                    }
+                }
+            }
+            return _hashTagsTweets.OrderDictionary();
         }
         /// <summary>
         /// returns a dictionary of urls in tweets
