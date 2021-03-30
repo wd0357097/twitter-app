@@ -15,9 +15,9 @@ namespace twitter_data.Managers
     {
         private HttpClient _client;
 
-        public TwitterStream()
+        public TwitterStream(string authToken)
         {
-            InitializeHttpClient();
+            InitializeHttpClient(authToken);
         }
 
         public TwitterStream(HttpClient client)
@@ -40,9 +40,8 @@ namespace twitter_data.Managers
                     request,
                     HttpCompletionOption.ResponseHeadersRead);
                 var body = await response.Content.ReadAsStreamAsync();
-                var reader = new StreamReader(body);
-
-                while (!reader.EndOfStream || !cancellationToken.IsCancellationRequested)
+                using var reader = new StreamReader(body);
+                while (!reader.EndOfStream && !cancellationToken.IsCancellationRequested)
                 {
                     var tweet = reader.ReadLine();
                     var currentTweet = JsonConvert.DeserializeObject<TwitterResponse>(tweet);
@@ -65,14 +64,14 @@ namespace twitter_data.Managers
             ReportingData?.Invoke(this, e);
         }
 
-        private void InitializeHttpClient()
+        private void InitializeHttpClient(string authToken)
         {
             _client = new HttpClient
             {
                 Timeout = TimeSpan.FromMilliseconds(Timeout.Infinite)
             };
             _client.DefaultRequestHeaders.Authorization =
-                 new AuthenticationHeaderValue("Bearer", ConfigurationManager.AppSettings["token"]);
+                 new AuthenticationHeaderValue("Bearer", authToken);
         }
     }
 }
