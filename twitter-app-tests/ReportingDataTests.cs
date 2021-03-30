@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using RichardSzalay.MockHttp;
 using Shouldly;
 using System.Collections.Generic;
 using System.IO;
