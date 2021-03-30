@@ -54,7 +54,7 @@ namespace twitter_app_ui.Controllers
                     Top10HashTags = e.HashTagsInTweets(),
                     Top10UrlTweets = e.UrlsInTweets(),
                 };
-                _cache.Set("ReportData", model);
+                _cache.Set("ReportData", model);// store it in cache
             };
             // start the stream
             await data.StartStreamAsync(_configuration.GetSection("twitter-stream").Value, cancellationToken);

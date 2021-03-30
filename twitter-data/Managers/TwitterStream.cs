@@ -34,7 +34,7 @@ namespace twitter_data.Managers
                 {
                     DateStartTime = DateTime.Now.TimeOfDay,
                 };
-                var request = new HttpRequestMessage(HttpMethod.Get, url);
+                var request = new HttpRequestMessage(HttpMethod.Get, "https://api.twitter.com/2/tweets/sample/stream?expansions=attachments.media_keys&tweet.fields=entities");
                 var response = await _client.SendAsync(
                     request,
                     HttpCompletionOption.ResponseHeadersRead);
