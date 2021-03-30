@@ -58,7 +58,7 @@ namespace twitter_data.Managers
         /// <summary>
         /// returns the percent of tweets that contain emojis
         /// </summary>
-        public double PercentOfTweetsThatContainsEmojis => this._emojiesInTweets.Count().CalculatePercentage(this.TotalNumberOfTweets);
+        public double PercentOfTweetsThatContainsEmojis => this._emojisInTweetCounter.CalculatePercentage(this.TotalNumberOfTweets);
         /// <summary>
         /// returns the percent of tweets that contain photo urls
         /// </summary>
@@ -152,7 +152,12 @@ namespace twitter_data.Managers
         {
             var regex = @"\u00a9|\u00ae|[\u2000-\u3300] |\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]";
             var dicRegex = new Regex(regex, RegexOptions.IgnoreCase);
-            foreach (Match match in dicRegex.Matches(this.CurrentTweet.Data.Text))
+            var allMatches = dicRegex.Matches(this.CurrentTweet.Data.Text);
+            if (allMatches.Count() > 0)
+            {
+                _emojisInTweetCounter++;
+            }
+            foreach (Match match in allMatches)
             {
                 if (match.Success)
                 {
