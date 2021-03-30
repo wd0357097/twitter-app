@@ -18,6 +18,7 @@ namespace twitter_data.Managers
         private Dictionary<string, int> _urlTweets;
         private int photoUrlInTweetCounter = 0;
         private TwitterResponse currentTweet;
+        private readonly string _photoMediaType = "photo";
 
         public ReportingData()
         {
@@ -70,11 +71,16 @@ namespace twitter_data.Managers
         /// <returns></returns>
         private int PhotoUrlsInTweets()
         {
-            var regex = @"(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png|jpeg|bmp|tiff|tiff)";// this may not be right
-            var match = Regex.Match(this.CurrentTweet.Data.Text, regex, RegexOptions.IgnoreCase);
-            if (match.Success)
+            var media = this.CurrentTweet.Includes?.Media;
+            if (media != null && media.Any())
             {
-                photoUrlInTweetCounter++;
+                foreach (var m in media)
+                {
+                    if (m.Type == this._photoMediaType)
+                    {
+                        photoUrlInTweetCounter++;
+                    }
+                }
             }
             return photoUrlInTweetCounter;
         }
@@ -117,8 +123,23 @@ namespace twitter_data.Managers
         /// <returns>dictionary</returns>
         public Dictionary<string, int> UrlsInTweets()
         {
-            var regex = @"(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])";
-            return this._urlTweets.RegexDataToDictionary(regex, this.CurrentTweet.Data.Text);
+            var urls = this.CurrentTweet.Data.Entities?.Urls;
+            if (urls != null)
+            {
+                foreach (var u in urls)
+                {
+                    if (_urlTweets.ContainsKey(u.DisplayUrl))
+                    {
+                        var value = _urlTweets.First(x => x.Key == u.DisplayUrl).Value;
+                        _urlTweets[u.DisplayUrl] = value + 1;
+                    }
+                    else
+                    {
+                        _urlTweets.Add(u.DisplayUrl, 1);
+                    }
+                }
+            }
+            return _urlTweets.OrderDictionary();
         }
         /// <summary>
         /// returns a dictionary of emojis in tweets
