@@ -7,6 +7,12 @@ namespace twitter_data.Extensions
 {
     public static class DataExtensions
     {
+        /// <summary>
+        /// calculates a percent
+        /// </summary>
+        /// <param name="count"></param>
+        /// <param name="totalNumber"></param>
+        /// <returns>double with 2 decimal places</returns>
         public static double CalculatePercentage(this int count, int totalNumber)
         {
             return Math.Round(Convert.ToDouble(count) / Convert.ToDouble(totalNumber) * 100, 2);
