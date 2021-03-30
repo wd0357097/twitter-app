@@ -2,6 +2,7 @@
 using System;
 using System.Configuration;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using twitter_data.Interface;
 using twitter_data.Managers;
@@ -29,7 +30,7 @@ namespace twitter_app_console
             };
 
             // start the stream
-            await data.StartStreamAsync(ConfigurationManager.AppSettings["twitter-stream"]);
+            await data.StartStreamAsync(ConfigurationManager.AppSettings["twitter-stream"], new CancellationToken());
         }
     }
 }

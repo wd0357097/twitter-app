@@ -7,6 +7,7 @@ using Moq;
 using twitter_app_tests.Mocks;
 using System.Net.Http;
 using System;
+using System.Threading;
 
 namespace twitter_app_tests
 {
@@ -27,7 +28,7 @@ namespace twitter_app_tests
         public async System.Threading.Tasks.Task start_stream_async_testAsync()
         {
             _mockHttpClient.Setup(p => p.GetAsync(It.IsAny<Uri>()));
-            await _data.StartStreamAsync("https://api.twitter.com/2/tweets/sample/stream");
+            await _data.StartStreamAsync("https://api.twitter.com/2/tweets/sample/stream", new CancellationToken());
         }
     }
 }

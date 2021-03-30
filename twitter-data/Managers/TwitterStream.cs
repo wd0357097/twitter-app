@@ -26,7 +26,7 @@ namespace twitter_data.Managers
         }
 
         public event EventHandler<ReportingData> ReportingData;
-        public async Task StartStreamAsync(string url)
+        public async Task StartStreamAsync(string url, CancellationToken cancellationToken)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace twitter_data.Managers
                 var body = await response.Content.ReadAsStreamAsync();
                 var reader = new StreamReader(body);
 
-                while (!reader.EndOfStream)
+                while (!reader.EndOfStream || !cancellationToken.IsCancellationRequested)
                 {
                     var tweet = reader.ReadLine();
                     var currentTweet = JsonConvert.DeserializeObject<TwitterResponse>(tweet);
