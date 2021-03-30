@@ -41,6 +41,7 @@ namespace twitter_data.Managers
                 this.EmojisInTweets();
                 this.HashTagsInTweets();
                 this.UrlsInTweets();
+                this.PhotoUrlsInTweets();
             }
         }
         /// <summary>
@@ -62,7 +63,7 @@ namespace twitter_data.Managers
         /// <summary>
         /// returns the percent of tweets that contain photo urls
         /// </summary>
-        public double PercentOfTweetsThatContainPhotoUrl => this.PhotoUrlsInTweets().CalculatePercentage(this.TotalNumberOfTweets);
+        public double PercentOfTweetsThatContainPhotoUrl => this._photoUrlInTweetCounter.CalculatePercentage(this.TotalNumberOfTweets);
         /// <summary>
         /// returns the percent of tweets that contain urls
         /// </summary>
@@ -76,13 +77,8 @@ namespace twitter_data.Managers
             var media = this.CurrentTweet.Includes?.Media;
             if (media != null && media.Any())
             {
-                foreach (var m in media)
-                {
-                    if (m.Type == this._photoMediaType)
-                    {
-                        _photoUrlInTweetCounter++;
-                    }
-                }
+                if(media.Any(x=> x.Type == this._photoMediaType))
+                    _photoUrlInTweetCounter++;
             }
             return _photoUrlInTweetCounter;
         }
