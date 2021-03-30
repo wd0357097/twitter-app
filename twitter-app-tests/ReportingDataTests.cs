@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Shouldly;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -36,15 +37,16 @@ namespace twitter_app_tests
             _data.TotalNumberOfTweets.ShouldBe(76);
         }
 
-        //[TestMethod]
-        //public void average_number_of_tweets_by_time_test()
-        //{
-        //    foreach (var t in _twitterResponse)
-        //    {
-        //        _data.CurrentTweet = t;
-        //    }
-        //    _data.AverageNumberOfTweets(_data.TimeCounter.TotalHours).ShouldBe(3.15);
-        //}
+        [TestMethod]
+        public void average_number_of_tweets_by_time_test()
+        {
+            //public TimeSpan TimeCounter => DateTime.Now.TimeOfDay - this.DateStartTime;
+            // make up a time here to test calculations 
+            var time = new DateTime(2020, 3, 1, 1, 1, 1).AddHours(.5);
+            _data.AverageNumberOfTweets(time.TimeOfDay.TotalHours).ShouldBe(50.1d);
+            _data.AverageNumberOfTweets(time.TimeOfDay.TotalMinutes).ShouldBe(0.84d);
+            _data.AverageNumberOfTweets(time.TimeOfDay.TotalSeconds).ShouldBe(0.01d);
+        }
 
         [TestMethod]
         public void top_emojis_in_tweets_test()
