@@ -38,9 +38,9 @@ namespace twitter_data.Managers
             { 
                 _currentTweet = value; 
                 this.TotalNumberOfTweets++;
-                this.EmojisInTweets();
-                this.HashTagsInTweets();
-                this.UrlsInTweets();
+                this.EmojisInTweetsDictionary();
+                this.HashTagsInTweetsDictionary();
+                this.UrlsInTweetsDictionary();
                 this.PhotoUrlsInTweets();
             }
         }
@@ -69,6 +69,18 @@ namespace twitter_data.Managers
         /// </summary>
         public double PercentOfTweetsThatContainUrl => this._urlInTweetCounter.CalculatePercentage(this.TotalNumberOfTweets);
         /// <summary>
+        /// returns dictionary of emojis
+        /// </summary>
+        public Dictionary<string, int> EmojisInTweets => this._emojiesInTweets;
+        /// <summary>
+        /// returns dictionary of hashtags
+        /// </summary>
+        public Dictionary<string, int> HashTagsInTweets => this._hashTagsTweets;
+        /// <summary>
+        /// returns dictionary of urls
+        /// </summary>
+        public Dictionary<string, int> UrlsInTweets => this._urlTweets;
+        /// <summary>
         /// calculates the photos in tweets based on the current tweet
         /// </summary>
         /// <returns></returns>
@@ -95,7 +107,7 @@ namespace twitter_data.Managers
         /// returns a dictionary of hash tags in tweets
         /// </summary>
         /// <returns>dictionary</returns>
-        public Dictionary<string, int> HashTagsInTweets()
+        private Dictionary<string, int> HashTagsInTweetsDictionary()
         {
             var hashTags = this.CurrentTweet.Data.Entities?.Hashtags;
             if (hashTags != null)
@@ -113,13 +125,14 @@ namespace twitter_data.Managers
                     }
                 }
             }
-            return _hashTagsTweets.OrderDictionary();
+            _hashTagsTweets = _hashTagsTweets.OrderDictionary();
+            return _hashTagsTweets;
         }
         /// <summary>
         /// returns a dictionary of urls in tweets
         /// </summary>
         /// <returns>dictionary</returns>
-        public Dictionary<string, int> UrlsInTweets()
+        private Dictionary<string, int> UrlsInTweetsDictionary()
         {
             var urls = this.CurrentTweet.Data.Entities?.Urls;
             if (urls != null)
@@ -138,13 +151,14 @@ namespace twitter_data.Managers
                 }
                 _urlInTweetCounter++;// add 1 to the counter
             }
-            return _urlTweets.OrderDictionary();
+            _urlTweets = _urlTweets.OrderDictionary();
+            return _urlTweets;
         }
         /// <summary>
         /// returns a dictionary of emojis in tweets
         /// </summary>
         /// <returns>dictionary</returns>
-        public Dictionary<string, int> EmojisInTweets()
+        private Dictionary<string, int> EmojisInTweetsDictionary()
         {
             var regex = @"\u00a9|\u00ae|[\u2000-\u3300] |\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]";
             var dicRegex = new Regex(regex, RegexOptions.IgnoreCase);
@@ -168,17 +182,18 @@ namespace twitter_data.Managers
                     }
                 }
             }
-            return _emojiesInTweets.OrderDictionary();
+            _emojiesInTweets = _emojiesInTweets.OrderDictionary();
+            return _emojiesInTweets;
         }
         /// <summary>
-        /// override the 2 screen for display purposes 
-        /// </summary>
+        /// override the tostring for display purposes 
+        /// </summary>s
         /// <returns></returns>
         public override string ToString()
         {
-            var emoji = _emojiesInTweets.FirstOrDefault();
-            var hash = _hashTagsTweets.FirstOrDefault();
-            var url = _urlTweets.FirstOrDefault();
+            var emoji = this.EmojisInTweets.FirstOrDefault();
+            var hash = this.HashTagsInTweets.FirstOrDefault();
+            var url = this.UrlsInTweets.FirstOrDefault();
             return
                 $"Total Number Of Tweets: {this.TotalNumberOfTweets}  \r\n" +
                 $"Projected Average Number Of Tweets Per Hour: {this.AverageNumberOfTweets(this.TimeCounter.TotalHours)} \r\n" +

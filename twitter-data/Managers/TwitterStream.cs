@@ -10,6 +10,9 @@ using twitter_data.Interface;
 
 namespace twitter_data.Managers
 {
+    /// <summary>
+    /// uses to gather data from the twitter sample stream
+    /// </summary>
     public class TwitterStream : IAppStream
     {
         private HttpClient _client;
@@ -25,6 +28,13 @@ namespace twitter_data.Managers
         }
 
         public event EventHandler<ReportingData> ReportingData;
+
+        /// <summary>
+        /// starts a continues stream until cancellation token is sent in
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public async Task StartStreamAsync(string url, CancellationToken cancellationToken)
         {
             try
@@ -34,7 +44,7 @@ namespace twitter_data.Managers
                 {
                     DateStartTime = DateTime.Now.TimeOfDay,
                 };
-                var request = new HttpRequestMessage(HttpMethod.Get, "https://api.twitter.com/2/tweets/sample/stream?expansions=attachments.media_keys&tweet.fields=entities");
+                var request = new HttpRequestMessage(HttpMethod.Get, url);
                 var response = await _client.SendAsync(
                     request,
                     HttpCompletionOption.ResponseHeadersRead);
@@ -45,7 +55,7 @@ namespace twitter_data.Managers
                     var tweet = reader.ReadLine();
                     var currentTweet = JsonConvert.DeserializeObject<TwitterResponse>(tweet);
                     // make sure the current tweet is not null
-                    if (currentTweet != null)
+                    if (currentTweet != null && currentTweet.Data != null)
                     {
                         data.CurrentTweet = currentTweet;
                         OnProcessCompleted(data);// notify
@@ -58,11 +68,19 @@ namespace twitter_data.Managers
             }
         }
 
+        /// <summary>
+        /// report on the data
+        /// </summary>
+        /// <param name="e"></param>
         private void OnProcessCompleted(ReportingData e)
         {
             ReportingData?.Invoke(this, e);
         }
 
+        /// <summary>
+        /// init the client
+        /// </summary>
+        /// <param name="authToken"></param>
         private void InitializeHttpClient(string authToken)
         {
             _client = new HttpClient

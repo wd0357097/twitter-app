@@ -50,7 +50,7 @@ namespace twitter_app_tests
         [TestMethod]
         public void top_emojis_in_tweets_test()
         {
-            _data.EmojisInTweets().FirstOrDefault().Key.ShouldBe("😭");
+            _data.EmojisInTweets.FirstOrDefault().Key.ShouldBe("😭");
         }
 
         [TestMethod]
@@ -62,7 +62,7 @@ namespace twitter_app_tests
         [TestMethod]
         public void top_hash_tags_in_tweets_test()
         {
-            _data.HashTagsInTweets().FirstOrDefault().Key.ShouldBe("原神");
+            _data.HashTagsInTweets.FirstOrDefault().Key.ShouldBe("原神");
         }
 
         [TestMethod]
@@ -80,7 +80,7 @@ namespace twitter_app_tests
         [TestMethod]
         public void top_urls_in_tweets_test()
         {
-            _data.UrlsInTweets().FirstOrDefault().Key.ShouldBe("twitter.com");
+            _data.UrlsInTweets.FirstOrDefault().Key.ShouldBe("twitter.com");
         }
     }
 }

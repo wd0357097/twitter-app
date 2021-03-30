@@ -10,12 +10,12 @@ namespace twitter_data.Interface
         TimeSpan DateStartTime { get; set; }
         int TotalNumberOfTweets { get; set; }
         double AverageNumberOfTweets(double time);
-        Dictionary<string, int> EmojisInTweets();
+        Dictionary<string, int> EmojisInTweets { get; }
         double PercentOfTweetsThatContainsEmojis { get; }
-        Dictionary<string, int> HashTagsInTweets();
+        Dictionary<string, int> HashTagsInTweets { get; }
         double PercentOfTweetsThatContainUrl { get; }
         double PercentOfTweetsThatContainPhotoUrl { get; }
-        Dictionary<string, int> UrlsInTweets();
+        Dictionary<string, int> UrlsInTweets { get; }
         TimeSpan TimeCounter { get; }
     }
 }

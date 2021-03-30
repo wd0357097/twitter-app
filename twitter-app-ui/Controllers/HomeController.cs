@@ -50,9 +50,9 @@ namespace twitter_app_ui.Controllers
                     PercentOfTweetsThatContainEmojis = e.PercentOfTweetsThatContainsEmojis,
                     PercentOfTweetsThatContainPhotoUrl = e.PercentOfTweetsThatContainPhotoUrl,
                     PercentOfTweetsThatContainUrl = e.PercentOfTweetsThatContainUrl,
-                    Top10EmojisInTweets = e.EmojisInTweets(),
-                    Top10HashTags = e.HashTagsInTweets(),
-                    Top10UrlTweets = e.UrlsInTweets(),
+                    Top10EmojisInTweets = e.EmojisInTweets,
+                    Top10HashTags = e.HashTagsInTweets,
+                    Top10UrlTweets = e.UrlsInTweets,
                 };
                 _cache.Set("ReportData", model);// store it in cache
             };
