@@ -56,7 +56,7 @@ namespace twitter_data.Managers
             }
             catch(Exception ex)
             {
-                throw ex;
+                throw new Exception($"Unable to process stream: {ex.Message}");
             }
         }
 

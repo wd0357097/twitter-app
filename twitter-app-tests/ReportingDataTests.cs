@@ -16,7 +16,7 @@ namespace twitter_app_tests
         private IReportingData _data;
 
         [TestInitialize]
-        public void Init() 
+        public void init() 
         {
             _data = new ReportingData();
             using (var r = new StreamReader("./Artifacts/TwitterSampleData.json"))
