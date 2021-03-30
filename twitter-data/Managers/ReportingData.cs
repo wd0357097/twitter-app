@@ -16,8 +16,10 @@ namespace twitter_data.Managers
         private Dictionary<string, int> _emojiesInTweets;
         private Dictionary<string, int> _hashTagsTweets;
         private Dictionary<string, int> _urlTweets;
-        private int photoUrlInTweetCounter = 0;
-        private TwitterResponse currentTweet;
+        private int _photoUrlInTweetCounter = 0;
+        private int _urlInTweetCounter = 0;
+        private int _emojisInTweetCounter = 0;
+        private TwitterResponse _currentTweet;
         private readonly string _photoMediaType = "photo";
 
         public ReportingData()
@@ -31,10 +33,10 @@ namespace twitter_data.Managers
         /// stores the current tweet in an object
         /// </summary>
         public TwitterResponse CurrentTweet 
-        { get => currentTweet; 
+        { get => _currentTweet; 
             set 
             { 
-                currentTweet = value; 
+                _currentTweet = value; 
                 this.TotalNumberOfTweets++;
                 this.EmojisInTweets();
                 this.HashTagsInTweets();
@@ -64,7 +66,7 @@ namespace twitter_data.Managers
         /// <summary>
         /// returns the percent of tweets that contain urls
         /// </summary>
-        public double PercentOfTweetsThatContainUrl => this._urlTweets.Count().CalculatePercentage(this.TotalNumberOfTweets);
+        public double PercentOfTweetsThatContainUrl => this._urlInTweetCounter.CalculatePercentage(this.TotalNumberOfTweets);
         /// <summary>
         /// calculates the photos in tweets based on the current tweet
         /// </summary>
@@ -78,11 +80,11 @@ namespace twitter_data.Managers
                 {
                     if (m.Type == this._photoMediaType)
                     {
-                        photoUrlInTweetCounter++;
+                        _photoUrlInTweetCounter++;
                     }
                 }
             }
-            return photoUrlInTweetCounter;
+            return _photoUrlInTweetCounter;
         }
         /// <summary>
         /// calculates the averages of tweets 
@@ -128,16 +130,17 @@ namespace twitter_data.Managers
             {
                 foreach (var u in urls)
                 {
-                    if (_urlTweets.ContainsKey(u.DisplayUrl))
+                    if (_urlTweets.ContainsKey(u.ExpandedUrl.IdnHost))
                     {
-                        var value = _urlTweets.First(x => x.Key == u.DisplayUrl).Value;
-                        _urlTweets[u.DisplayUrl] = value + 1;
+                        var value = _urlTweets.First(x => x.Key == u.ExpandedUrl.IdnHost).Value;
+                        _urlTweets[u.ExpandedUrl.IdnHost] = value + 1;
                     }
                     else
                     {
-                        _urlTweets.Add(u.DisplayUrl, 1);
+                        _urlTweets.Add(u.ExpandedUrl.IdnHost, 1);
                     }
                 }
+                _urlInTweetCounter++;// add 1 to the counter
             }
             return _urlTweets.OrderDictionary();
         }
@@ -148,7 +151,23 @@ namespace twitter_data.Managers
         public Dictionary<string, int> EmojisInTweets()
         {
             var regex = @"\u00a9|\u00ae|[\u2000-\u3300] |\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]";
-            return this._emojiesInTweets.RegexDataToDictionary(regex, this.CurrentTweet.Data.Text);
+            var dicRegex = new Regex(regex, RegexOptions.IgnoreCase);
+            foreach (Match match in dicRegex.Matches(this.CurrentTweet.Data.Text))
+            {
+                if (match.Success)
+                {
+                    if (_emojiesInTweets.ContainsKey(match.Value))
+                    {
+                        var value = _emojiesInTweets.First(x => x.Key == match.Value).Value;
+                        _emojiesInTweets[match.Value] = value + 1;
+                    }
+                    else
+                    {
+                        _emojiesInTweets.Add(match.Value, 1);
+                    }
+                }
+            }
+            return _emojiesInTweets.OrderDictionary();
         }
         /// <summary>
         /// override the 2 screen for display purposes 
