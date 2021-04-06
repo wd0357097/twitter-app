@@ -1,13 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using twitter_data.Interface;
+using twitter_data.Managers;
 
 namespace twitter_app_ui
 {
@@ -28,6 +26,9 @@ namespace twitter_app_ui
                 options.IdleTimeout = TimeSpan.FromMinutes(60);
             });
             services.AddMemoryCache();
+            // setup DI
+            services.AddSingleton<IAppStream>(x =>
+                    new TwitterStream(Configuration.GetSection("token").Value));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

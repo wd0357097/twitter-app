@@ -4,24 +4,22 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using twitter_app_ui.Models;
 using twitter_data.Interface;
-using twitter_data.Managers;
 
 namespace twitter_app_ui.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _configuration;
+        private readonly IAppStream _data;
         private IMemoryCache _cache;// This is not ideal, but without storing to a database, this is the best we can do for now
 
-        public HomeController(ILogger<HomeController> logger, IConfiguration configuration, IMemoryCache cache)
+        public HomeController(IConfiguration configuration, IMemoryCache cache, IAppStream data)
         {
-            _logger = logger;
             _configuration = configuration;
             _cache = cache;
+            _data = data;
         }
 
         public IActionResult Index()
@@ -36,10 +34,8 @@ namespace twitter_app_ui.Controllers
 
         public async Task StartProcessingAsync(CancellationToken cancellationToken)
         {
-            IAppStream data = new TwitterStream(_configuration.GetSection("token").Value);
-
             // get the reporting data
-            data.ReportingData += (s, e) =>
+            _data.ReportingData += (s, e) =>
             {
                 var model = new ReportDataViewModel
                 {
@@ -57,7 +53,7 @@ namespace twitter_app_ui.Controllers
                 _cache.Set("ReportData", model);// store it in cache
             };
             // start the stream
-            await data.StartStreamAsync(_configuration.GetSection("twitter-stream").Value, cancellationToken);
+            await _data.StartStreamAsync(_configuration.GetSection("twitter-stream").Value, cancellationToken);
             _cache.Set("ReportData", "");// clear the cache
         }
         [HttpGet]
