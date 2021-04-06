@@ -4,6 +4,7 @@ The twitter app features 4 projects
 
 1. twitter-app-console
    - Used for showing limited data from the stream, can only start processing of stream. Will need to close console to stop the stream. 
+   -  Uses DI, (Singleton intance) setup to inject an instance of reporting data 
 2. twitter-app.tests
    - Used to validate reporting data from the twitter-data library. Uses sample data in artifacts folder for calculations.
 3. twitter-app.ui
