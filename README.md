@@ -16,12 +16,19 @@ The twitter app features 4 projects
 
 Data Gathering 
 
-•	Total number of tweets received  
+•	Total number of tweets received 
+
 •	Average tweets per hour/minute/second 
+
 •	Top emojis in tweets* (Top 10 in UI component)
+
 •	Percent of tweets that contains emojis 
+
 •	Top hashtags (Top 10 in UI component)
+
 •	Percent of tweets that contain a url 
+
 •	Percent of tweets that contain a photo url (pic.twitter.com or Instagram) 
+
 •	Top domains of urls in tweets (Top 10 in UI component)
 
