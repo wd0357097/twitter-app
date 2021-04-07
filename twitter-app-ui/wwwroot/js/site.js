@@ -9,9 +9,6 @@ process.click(function () {
     console.log(process.text());
     console.log('xhr', xhr);
     if (xhr && xhr.readyState != 4 || process.text() === 'STOP Processing') {
-        xhr.abort();
-        process.text('Start Processing');
-        clearInterval(interval);
         resetValues();
     } else {
         $('#process').text('STOP Processing');
@@ -40,6 +37,10 @@ process.click(function () {
                     ToHtmlList($('#emoji-list'), res.top10EmojisInTweets);
                     ToHtmlList($('#domains-list'), res.top10UrlTweets);
                     ToHtmlList($('#hashtag-list'), res.top10HashTags);             
+                },
+                error: function (err) {
+                    alert("We are not able to process your request at this time.");
+                    resetValues();
                 }
             });
         }, 3000);// 3 seconds
@@ -57,6 +58,9 @@ function ToHtmlList(element, collection)
 }
 
 function resetValues() {
+    xhr.abort();
+    process.text('Start Processing');
+    clearInterval(interval);
     xhr = null;
     interval = null;
 }

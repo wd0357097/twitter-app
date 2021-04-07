@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -56,6 +57,7 @@ namespace twitter_app_ui.Controllers
             await _data.StartStreamAsync(_configuration.GetSection("twitter-stream").Value, cancellationToken);
             _cache.Set("ReportData", "");// clear the cache
         }
+
         [HttpGet]
         public JsonResult GetReportData()
         {
